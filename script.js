@@ -1,7 +1,7 @@
 // script.js
 
 // ========= KONFIGURATION =========
-const pdfPath = 'positions3.pdf'; // Sicherstellen, dass der Pfad korrekt ist!
+const pdfPath = 'position3.pdf'; // Sicherstellen, dass der Pfad korrekt ist!
 // ===============================
 
 const canvas = document.getElementById('pdf-canvas');
