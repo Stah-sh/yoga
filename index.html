@@ -2,19 +2,24 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Zufälliger PDF-Betrachter</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Auf diesem Canvas-Element wird die PDF-Seite gezeichnet -->
+    <!-- Das Canvas für die PDF bleibt unverändert -->
     <canvas id="pdf-canvas"></canvas>
 
-    <!-- Wir laden die pdf.js Bibliothek von einem CDN (Content Delivery Network) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+    <!-- NEU: Das Overlay für die Hochformat-Warnung -->
+    <div id="orientation-overlay">
+        <div class="message">
+            <div class="icon">↻</div> <!-- Ein einfaches Rotations-Symbol -->
+            Bitte drehe dein Gerät ins Querformat.
+        </div>
+    </div>
 
-    <!-- Unser eigenes Skript, das die Logik enthält -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script src="script.js"></script>
 
 </body>
