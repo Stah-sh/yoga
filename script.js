@@ -1,7 +1,7 @@
 // script.js
 
 // ========= KONFIGURATION =========
-const pdfPath = 'positions2.pdf';
+const pdfPath = 'positions3.pdf'; // Sicherstellen, dass der Pfad korrekt ist!
 // ===============================
 
 const canvas = document.getElementById('pdf-canvas');
@@ -19,19 +19,21 @@ function renderPage(num) {
     currentPageNum = num;
 
     pdfDoc.getPage(num).then(page => {
-        // Diese Logik dreht Hochformat-Seiten automatisch, falls vorhanden
+        // Diese Logik dreht Hochformat-Seiten der PDF automatisch
         const initialViewport = page.getViewport({ scale: 1 });
-        const isPortrait = initialViewport.height > initialViewport.width;
-        const rotation = isPortrait ? 90 : 0;
+        const isPortraitPdfPage = initialViewport.height > initialViewport.width;
+        const rotation = isPortraitPdfPage ? 90 : 0;
         
         const devicePixelRatio = window.devicePixelRatio || 1;
         const viewportForScaling = page.getViewport({ scale: 1, rotation: rotation });
 
-        // Wir benutzen Math.max, damit der Querformat-Bildschirm immer voll ausgefüllt wird ("cover"-Effekt)
-        const scale = Math.max(
+        // --- HIER IST DIE ENTSCHEIDENDE ÄNDERUNG FÜR "CONTAIN" ---
+        // Wir verwenden Math.min, damit die Seite immer komplett sichtbar ist und nie abgeschnitten wird.
+        const scale = Math.min(
             document.body.clientWidth / viewportForScaling.width,
             document.body.clientHeight / viewportForScaling.height
         );
+        // -----------------------------------------------------------
         
         const scaledViewport = page.getViewport({ 
             scale: scale * devicePixelRatio, 
@@ -46,15 +48,18 @@ function renderPage(num) {
 
         const renderContext = {
             canvasContext: ctx,
-            viewport: scaledViewport,
-            renderInteractiveForms: false,
-            enableWebGL: true
+            viewport: scaledViewport
         };
         page.render(renderContext);
     });
 }
 
-function showRandomPage() {
+function showRandomPage(event) {
+    // Verhindere Klicks, wenn das Overlay aktiv ist (wichtig für die Logik)
+    if (window.matchMedia("(orientation: portrait)").matches) {
+        return;
+    }
+    
     if (!pdfDoc || pageCount <= 1) return;
     
     let newPageNum;
@@ -68,17 +73,15 @@ function showRandomPage() {
 pdfjsLib.getDocument(pdfPath).promise.then(doc => {
     pdfDoc = doc;
     pageCount = doc.numPages;
-    console.log(`PDF erfolgreich geladen mit ${pageCount} Seiten.`);
     
-    // Initial rendern. Wenn im Hochformat, ist das Canvas eh unsichtbar.
+    // Initial rendern (ist unsichtbar, falls im Hochformat)
     renderPage(1);
 
     document.addEventListener('click', showRandomPage);
 
-    // Der 'resize'-Listener ist jetzt extrem wichtig. Er wird ausgelöst, wenn man das Gerät dreht!
+    // Der 'resize'-Listener kümmert sich um das Drehen des Geräts
     window.addEventListener('resize', () => {
-        // Wir rendern die Seite neu, damit sie sich an die neuen Dimensionen anpasst.
-        renderPage(currentPageNum)
+        renderPage(currentPageNum);
     });
 
 }).catch(console.error);

@@ -9,18 +9,25 @@ body, html {
     background-color: #000;
 }
 
-/* Standard-Styling für das Canvas (Querformat-Ansicht) */
-#pdf-canvas {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
+/* NEU: Flexbox zum Zentrieren des Canvas verwenden */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* --- NEU: Styling für das Overlay --- */
+/* Das Canvas selbst, es wird durch JS skaliert */
+#pdf-canvas {
+    /* Wichtig: Verhindert, dass es durch einen Fehler doch zu groß wird */
+    max-width: 100vw;
+    max-height: 100vh;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(0,0,0,0.4);
+}
 
-/* Das Overlay ist standardmäßig versteckt */
+
+/* --- Overlay für Hochformat-Warnung (bleibt unverändert) --- */
+
 #orientation-overlay {
     display: none;
     position: fixed;
@@ -30,9 +37,7 @@ body, html {
     height: 100%;
     background-color: #111;
     color: #fff;
-    z-index: 100; /* Stellt sicher, dass es über allem liegt */
-    
-    /* Zentriert die Nachricht perfekt */
+    z-index: 100;
     justify-content: center;
     align-items: center;
 }
@@ -49,11 +54,11 @@ body, html {
     margin-bottom: 20px;
 }
 
-/* --- DIE MAGIE: CSS Media Query für die Ausrichtung --- */
 
-/* Diese Regeln gelten NUR, wenn das Gerät im Hochformat ist */
+/* --- Media Query, die alles steuert (bleibt unverändert) --- */
+
 @media (orientation: portrait) {
-    /* Verstecke das PDF-Canvas */
+    /* Verstecke das PDF-Canvas im Hochformat */
     #pdf-canvas {
         display: none;
     }
