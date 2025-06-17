@@ -1,6 +1,6 @@
 // ========= KONFIGURATION =========
 // Gib hier den Pfad zu deiner PDF-Datei an.
-const pdfPath = 'positions.pdf';
+const pdfPath = 'positions2.pdf';
 // ===============================
 
 
