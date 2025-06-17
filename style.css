@@ -1,0 +1,15 @@
+/* Setzt den Browser-Standard zurück, um Ränder zu entfernen */
+body, html {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Verhindert Scrollbalken */
+    background-color: #333; /* Dunkler Hintergrund, falls das Laden dauert */
+}
+
+/* Stil für unser Canvas-Element */
+#pdf-canvas {
+    display: block; /* Stellt sicher, dass es sich wie ein Block-Element verhält */
+    width: 100vw;   /* 100% der Ansichtsfenster-Breite */
+    height: 100vh;  /* 100% der Ansichtsfenster-Höhe */
+    cursor: pointer; /* Zeigt an, dass das Element klickbar ist */
+}
